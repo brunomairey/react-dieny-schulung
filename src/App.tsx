@@ -1,42 +1,30 @@
-import React, {FunctionComponent, useEffect, useState} from 'react';
-import Pokemon from "./models/pokemon";
-import POKEMONS from "./models/mock-pokemon";
+import React, {FunctionComponent} from 'react';
+import PokemonList from "./Pages/pokemon-list";
+import {BrowserRouter as Router, Link, Route, Switch} from "react-router-dom";
+import PokemonDetails from "./Pages/pokemon-details";
+import PageNotFound from "./Pages/page-not-found";
+import PokemonEdit from "./Pages/pokemon-edit";
 
 const App: FunctionComponent = () => {
-    const [pokemons, setPokemons] = useState<Pokemon[]>([]);
-
-
-    useEffect(() => {
-       setPokemons(POKEMONS)
-    }, []);
 
     return (
-        <div>
-            <h1 className="center">Pokemon App</h1>
-            <div className="container">
-                <div className="row">
-                    {pokemons.map(({id,name, picture,created }) => (
-                        <div className="col s6 m4" key={id}>
-                            <div className="card horizontal">
-                                <div className="card-image">
-                                    <img src={picture} alt={name}/>
-                                </div>
-                                <div className="card-stacked">
-                                    <div className="card-content">
-                                        <p>{name}</p>
-                                        <p><small>{created.toString()}</small></p>
-                                    </div>
-                                    {/*<div className="card-action">*/}
-                                    {/*    <a href="#">Détails</a>*/}
-                                    {/*</div>*/}
-                                </div>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-           </div>
-        </div>
+        <Router>
+            <div>
+                <nav>
+                    <div className="nav-wrapper teal">
+                        <Link to="/" className="brand-logo center">Pokédex</Link>
+                    </div>
+                </nav>
+            </div>
+            <Switch>
+                <Route exact path="/" component={PokemonList}/>
+                <Route exact path="/pokemons" component={PokemonList}/>
+                <Route exact path="/pokemons/edit/:id" component={PokemonEdit}/>
+                <Route path="/pokemons/:id" component={PokemonDetails}/>
 
+                <Route component={PageNotFound}/>
+            </Switch>
+        </Router>
     )
 }
 
